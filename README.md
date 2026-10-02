@@ -182,7 +182,7 @@ The text on the map itself (street names) uses Noto Sans from the tile server.
 | `data-lazy` | `false` | Load immediately instead of when the map is near the screen. |
 | `data-zoom-buttons` | `false` | Hide the + / − buttons. |
 | `data-show-labels` | `false` | Hide the text above pins. |
-| `data-attribution` | `Map by <a href="…">You</a>` | Extra credit line in the (i) attribution. |
+| `data-attribution` | `Map by <a href="…">You</a>` | Extra credit in the (i) attribution, shown after "OpenPin by SputnikFX". |
 | `aria-label` | `Map of our store` | Name for screen readers. Default: "Map showing {label}". |
 
 ### JavaScript

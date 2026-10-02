@@ -104,7 +104,7 @@ const controller = createMap(elementOrSelector, {
   lazy: true,                      // load when near the viewport
   zoomButtons: true, showLabels: true,
   minZoom: 2, maxZoom: 18, padding: { top: 100, bottom: 40, left: 70, right: 70 },
-  timeout: 20000, attribution: 'extra HTML credit',
+  timeout: 20000, attribution: 'extra HTML credit',  // shown after "OpenPin by SputnikFX" in the (i)
   onReady(map, maplibregl) {},
   mapOptions: {},                  // passed to new maplibregl.Map()
 });

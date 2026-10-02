@@ -1,5 +1,5 @@
 /*!
- * OpenPin 1.0.0
+ * OpenPin 1.0.1
  * Drop-in OpenStreetMap maps with custom colors. No API key, no Google.
  * MIT License. Bundles MapLibre GL JS (BSD-3-Clause, see maplibre/LICENSE.txt).
  * Map data © OpenStreetMap contributors, served by VersaTiles.
@@ -9,7 +9,9 @@
 // live anywhere on a site (/openpin/, /assets/maps/, a CDN, ...).
 const asset = path => new URL(path, import.meta.url).href;
 
-export const version = '1.0.0';
+export const version = '1.0.1';
+
+const CREDIT = '<a href="https://www.sputnikfx.com/" target="_blank" rel="noopener">OpenPin by SputnikFX</a>';
 
 // Each map color role, and the literal hex value it has in style.json.
 // buildStyle() swaps these values for the active theme's colors.
@@ -343,7 +345,7 @@ export function createMap(target, options = {}) {
       });
       map.touchZoomRotate.disableRotation();
       if (options.zoomButtons !== false) map.addControl(new library.NavigationControl({ showCompass: false }), 'top-right');
-      map.addControl(new library.AttributionControl({ compact: true, customAttribution: options.attribution }), 'bottom-right');
+      map.addControl(new library.AttributionControl({ compact: true, customAttribution: [CREDIT, options.attribution].filter(Boolean) }), 'bottom-right');
       markers.forEach(addMarker);
       home.addEventListener('click', recenter);
 
