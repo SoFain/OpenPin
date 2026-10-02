@@ -42,7 +42,7 @@ Adjust `src` to wherever you copied the folder. A relative path like `../openpin
 
 ## Custom colors
 
-Pick a theme with `data-theme` / `theme`: `country` (default, warm rural), `coastal` (light, blue), `mono` (grays), or `midnight` (dark). Override any subset with `data-colors` / `colors`. Unspecified keys keep the theme's value. Values are any CSS color string.
+Pick a theme with `data-theme` / `theme`: `country` (default, warm rural), `coastal` (light, blue), `mono` (grays), `midnight` (dark), `sputnik` (dark navy, red pin), `gmaps` (light gray and sky blue, like mainstream street maps), `vivid` (bright, saturated), `evergreen` (greens), `blueprint` (white lines on blue), or `vintage` (sepia atlas). Override any subset with `data-colors` / `colors`. Unspecified keys keep the theme's value. Values are any CSS color string.
 
 Map keys:
 - `background`: open land

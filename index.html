@@ -130,7 +130,7 @@
       $('themes').replaceChildren(...Object.keys(themes).map(name => {
         const button = document.createElement('button');
         button.type = 'button';
-        button.textContent = name;
+        button.textContent = name === 'gmaps' ? 'GMaps' : name[0].toUpperCase() + name.slice(1);
         button.setAttribute('aria-pressed', String(name === themeName));
         button.onclick = () => { themeName = name; overrides = {}; controller.setColors(name); renderThemes(); renderColors(); renderCode(); };
         return button;
