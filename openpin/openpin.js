@@ -1,5 +1,5 @@
 /*!
- * OpenPin 1.0.1
+ * OpenPin 1.1.0
  * Drop-in OpenStreetMap maps with custom colors. No API key, no Google.
  * MIT License. Bundles MapLibre GL JS (BSD-3-Clause, see maplibre/LICENSE.txt).
  * Map data © OpenStreetMap contributors, served by VersaTiles.
@@ -9,7 +9,7 @@
 // live anywhere on a site (/openpin/, /assets/maps/, a CDN, ...).
 const asset = path => new URL(path, import.meta.url).href;
 
-export const version = '1.0.1';
+export const version = '1.1.0';
 
 const CREDIT = '<a href="https://www.sputnikfx.com/" target="_blank" rel="noopener">OpenPin by SputnikFX</a>';
 
@@ -72,6 +72,48 @@ export const themes = Object.freeze({
     road: '#3b443f', roadCasing: '#161b19', highway: '#c49a4a', rail: '#4f5a52', boundary: '#56605a',
     label: '#d9dfd6', labelHalo: '#1d2321', icon: '#9aa89c',
     pin: '#e0a046', pinIcon: '#1d2321', surface: '#262d2a', text: '#e6ebe3', border: '#3c4641',
+  }),
+  sputnik: Object.freeze({
+    background: '#0a111b', developed: '#0f1824', green: '#0e1b1d', forest: '#10201f', bare: '#121a24',
+    water: '#0b2236', waterway: '#16405e', building: '#16202c', buildingOutline: '#223042',
+    road: '#1b2633', roadCasing: '#05080d', highway: '#c98a3e', rail: '#3a4a5c', boundary: '#4a5a6c',
+    label: '#c5d3dc', labelHalo: '#0a111b', icon: '#7f95a3',
+    pin: '#ff432f', pinIcon: '#eef5f8', surface: '#0a1019', text: '#eef5f8', border: '#2b3a4a',
+  }),
+  gmaps: Object.freeze({
+    background: '#f5f5f5', developed: '#ebedf0', green: '#c3ecb2', forest: '#a9dc98', bare: '#f3ead6',
+    water: '#aadaff', waterway: '#8ccbf7', building: '#e8e8e8', buildingOutline: '#d6d8db',
+    road: '#ffffff', roadCasing: '#d9dce0', highway: '#f8c967', rail: '#bdc1c6', boundary: '#9aa0a6',
+    label: '#5f6368', labelHalo: '#ffffff', icon: '#7b8086',
+    pin: '#ea4335', pinIcon: '#a50e0e', surface: '#ffffff', text: '#3c4043', border: '#dadce0',
+  }),
+  vivid: Object.freeze({
+    background: '#fff7e6', developed: '#ffe3f1', green: '#86e08f', forest: '#3fcf7d', bare: '#ffe38a',
+    water: '#3bc4ff', waterway: '#0ea5e9', building: '#ffc6df', buildingOutline: '#f472b6',
+    road: '#ffffff', roadCasing: '#b69cff', highway: '#ff6a2b', rail: '#7c3aed', boundary: '#e11d74',
+    label: '#24124d', labelHalo: '#ffffff', icon: '#7c3aed',
+    pin: '#ff2d95', pinIcon: '#ffffff', surface: '#ffffff', text: '#24124d', border: '#c9b6ff',
+  }),
+  evergreen: Object.freeze({
+    background: '#e2eed6', developed: '#d4e4c5', green: '#b6da9c', forest: '#8bc27c', bare: '#dfe6c2',
+    water: '#9bd0bf', waterway: '#78bda5', building: '#c7dab5', buildingOutline: '#a6c293',
+    road: '#f6fbef', roadCasing: '#9dbb89', highway: '#4d9b4b', rail: '#6d8d60', boundary: '#6a8e59',
+    label: '#1d4a29', labelHalo: '#eef6e6', icon: '#3d7847',
+    pin: '#1e6a39', pinIcon: '#eaf7df', surface: '#f1f8ea', text: '#1d4a29', border: '#a6c293',
+  }),
+  blueprint: Object.freeze({
+    background: '#1c4f92', developed: '#21579c', green: '#22599a', forest: '#245c9d', bare: '#2a60a0',
+    water: '#153e78', waterway: '#9cc3f0', building: '#2b65a8', buildingOutline: '#a8c8f0',
+    road: '#2e6ab0', roadCasing: '#dbe9ff', highway: '#ffffff', rail: '#a8c8f0', boundary: '#dbe9ff',
+    label: '#eaf3ff', labelHalo: '#1c4f92', icon: '#cfe2ff',
+    pin: '#ffd166', pinIcon: '#1c4f92', surface: '#17457f', text: '#eaf3ff', border: '#6f9fd8',
+  }),
+  vintage: Object.freeze({
+    background: '#efe2c4', developed: '#e5d2ab', green: '#d8d29f', forest: '#c6be88', bare: '#ead8b0',
+    water: '#b7cabe', waterway: '#9cb2a7', building: '#dbc59c', buildingOutline: '#bea576',
+    road: '#f7ecd4', roadCasing: '#b2996c', highway: '#b4552a', rail: '#7a6243', boundary: '#8a6d48',
+    label: '#4a3423', labelHalo: '#f3e7cc', icon: '#7a5a3a',
+    pin: '#8c2f1c', pinIcon: '#f3e7cc', surface: '#f5ead2', text: '#4a3423', border: '#bea576',
   }),
 });
 

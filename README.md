@@ -12,7 +12,7 @@ A drop-in map for any website. It uses free OpenStreetMap data, so you don't nee
 [![The OpenPin theme builder: theme and color pickers beside a map of Baker, Florida with a red house pin labeled "Baker Feed & Country Store"](docs/screenshot.jpg)](https://sofain.github.io/OpenPin/)
 
 - **One folder, one `<div>`, one `<script>`.** You don't write any JavaScript unless you want to.
-- **Custom colors.** Choose from 4 built-in themes, or set any of the 22 colors yourself.
+- **Custom colors.** Choose from 10 built-in themes, or set any of the 22 colors yourself.
 - **Good manners.** The map loads only when it scrolls near the screen. It shows a plain address and an "Open in OpenStreetMap" link if it can't load, and it doesn't hijack page scrolling.
 - **Built on open tools:** [MapLibre GL JS](https://maplibre.org/) for drawing, [VersaTiles](https://versatiles.org/) for the map tiles, and [OpenStreetMap](https://www.openstreetmap.org/) for the data.
 
@@ -91,6 +91,12 @@ Then open the address it prints. On a real web host it works as is.
 | `coastal` | Light and airy, blue water, a teal pin |
 | `mono` | Quiet grays that suit almost any brand |
 | `midnight` | A dark map with an amber pin |
+| `sputnik` | Deep navy land, golden highways, a red pin |
+| `gmaps` | Light gray land, sky-blue water, and yellow highways, like the big street-map apps |
+| `vivid` | Bright: cream land, electric-blue water, orange highways, a hot-pink pin |
+| `evergreen` | Greens throughout: sage land, deep-green highways, teal water |
+| `blueprint` | White linework on blueprint blue, a yellow pin |
+| `vintage` | A sepia paper atlas with rust-red highways |
 
 ### Option B: change individual colors
 
@@ -174,7 +180,7 @@ The text on the map itself (street names) uses Noto Sans from the tile server.
 | `data-home-label` | `Back to Baker` | Button that returns to the starting view. `false` hides it. |
 | `data-address` | `5791 Hwy 4, Baker, FL` | Shown while loading or if the map fails. |
 | `data-link` | `https://…` | Where clicking the pin goes. Defaults to OpenStreetMap. |
-| `data-theme` | `coastal` | `country`, `coastal`, `mono`, or `midnight`. |
+| `data-theme` | `coastal` | `country`, `coastal`, `mono`, `midnight`, `sputnik`, `gmaps`, `vivid`, `evergreen`, `blueprint`, or `vintage`. |
 | `data-colors` | `'{"pin":"#c2410c"}'` | Color overrides (JSON). |
 | `data-markers` | `'[{"lat":30.4,"lng":-87.2,"label":"Pensacola"}]'` | Several pins (JSON). The map fits them all on screen. |
 | `data-pin` | `dot` | Pin icon: `house` (default), `dot`, or `none`. |
