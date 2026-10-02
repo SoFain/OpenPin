@@ -9,7 +9,7 @@ A drop-in map for any website. It uses free OpenStreetMap data, so you don't nee
 
 **[Live demo and theme builder →](https://sofain.github.io/OpenPin/)** Examples: [basic](https://sofain.github.io/OpenPin/examples/basic.html) · [multiple pins](https://sofain.github.io/OpenPin/examples/multiple-pins.html)
 
-![A map of Baker, Florida with a red house pin labeled "Baker Feed & Country Store"](docs/screenshot.jpg)
+[![The OpenPin theme builder: theme and color pickers beside a map of Baker, Florida with a red house pin labeled "Baker Feed & Country Store"](docs/screenshot.jpg)](https://sofain.github.io/OpenPin/)
 
 - **One folder, one `<div>`, one `<script>`.** You don't write any JavaScript unless you want to.
 - **Custom colors.** Choose from 4 built-in themes, or set any of the 22 colors yourself.
