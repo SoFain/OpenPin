@@ -2,6 +2,8 @@
 
 A drop-in map for any website. It uses free OpenStreetMap data, so you don't need Google, an API key, a billing account, or a build step. You can recolor every part of it.
 
+**[Live demo and theme builder →](https://sofain.github.io/simple-open-maps/)** Examples: [basic](https://sofain.github.io/simple-open-maps/examples/basic.html) · [multiple pins](https://sofain.github.io/simple-open-maps/examples/multiple-pins.html)
+
 ![A map of Baker, Florida with a red house pin labeled "Baker Feed & Country Store"](docs/screenshot.jpg)
 
 - **One folder, one `<div>`, one `<script>`.** You don't write any JavaScript unless you want to.
