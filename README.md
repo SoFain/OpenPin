@@ -1,8 +1,13 @@
-# Simple Open Maps
+<h1>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="logos/Openpin-Darkmode.svg">
+    <img src="logos/OpenPin.svg" alt="OpenPin" width="320">
+  </picture>
+</h1>
 
 A drop-in map for any website. It uses free OpenStreetMap data, so you don't need Google, an API key, a billing account, or a build step. You can recolor every part of it.
 
-**[Live demo and theme builder →](https://sofain.github.io/simple-open-maps/)** Examples: [basic](https://sofain.github.io/simple-open-maps/examples/basic.html) · [multiple pins](https://sofain.github.io/simple-open-maps/examples/multiple-pins.html)
+**[Live demo and theme builder →](https://sofain.github.io/OpenPin/)** Examples: [basic](https://sofain.github.io/OpenPin/examples/basic.html) · [multiple pins](https://sofain.github.io/OpenPin/examples/multiple-pins.html)
 
 ![A map of Baker, Florida with a red house pin labeled "Baker Feed & Country Store"](docs/screenshot.jpg)
 
@@ -291,4 +296,4 @@ Visitors usually want directions on their phone. You can link to any maps app. N
 
 ## License
 
-The Simple Open Maps code is under the [MIT License](LICENSE). The bundled MapLibre GL JS is BSD-3-Clause (`simple-open-maps/maplibre/LICENSE.txt`). The map style is adapted from the VersaTiles CC0 style. Map data © OpenStreetMap contributors (ODbL). See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
+The OpenPin code is under the [MIT License](LICENSE). The bundled MapLibre GL JS is BSD-3-Clause (`simple-open-maps/maplibre/LICENSE.txt`). The map style is adapted from the VersaTiles CC0 style. Map data © OpenStreetMap contributors (ODbL). See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).

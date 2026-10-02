@@ -1,5 +1,5 @@
 /*!
- * Simple Open Maps 1.0.0
+ * OpenPin 1.0.0
  * Drop-in OpenStreetMap maps with custom colors. No API key, no Google.
  * MIT License. Bundles MapLibre GL JS (BSD-3-Clause, see maplibre/LICENSE.txt).
  * Map data © OpenStreetMap contributors, served by VersaTiles.
@@ -79,7 +79,7 @@ export function resolveColors(theme = 'country', colors = {}) {
   if (typeof theme === 'string') {
     base = themes[theme];
     if (!base) {
-      console.warn(`Simple Open Maps: unknown theme "${theme}". Using "country". Themes: ${Object.keys(themes).join(', ')}.`);
+      console.warn(`OpenPin: unknown theme "${theme}". Using "country". Themes: ${Object.keys(themes).join(', ')}.`);
       base = themes.country;
     }
   }
@@ -144,11 +144,11 @@ export function toLngLat(value) {
     : [value.lng ?? value.lon ?? value.longitude, value.lat ?? value.latitude];
   const [lng, lat] = pair.map(Number);
   if (!Number.isFinite(lng) || !Number.isFinite(lat)) {
-    throw new Error(`Simple Open Maps: ${JSON.stringify(value)} is not a location. Use [lng, lat] or { lat, lng }.`);
+    throw new Error(`OpenPin: ${JSON.stringify(value)} is not a location. Use [lng, lat] or { lat, lng }.`);
   }
   if (Math.abs(lat) > 90 || Math.abs(lng) > 180) {
     const hint = Math.abs(lat) > 90 && Math.abs(lng) <= 90 ? ' Latitude and longitude look swapped: arrays are [lng, lat].' : '';
-    throw new Error(`Simple Open Maps: [${lng}, ${lat}] is outside the world.${hint}`);
+    throw new Error(`OpenPin: [${lng}, ${lat}] is outside the world.${hint}`);
   }
   return [lng, lat];
 }
@@ -207,12 +207,12 @@ export function getMap(element) {
  */
 export function createMap(target, options = {}) {
   const element = typeof target === 'string' ? document.querySelector(target) : target;
-  if (!element) throw new Error(`Simple Open Maps: no element matches ${JSON.stringify(target)}.`);
+  if (!element) throw new Error(`OpenPin: no element matches ${JSON.stringify(target)}.`);
   instances.get(element)?.destroy();
 
   const markers = normalizeMarkers(options);
   const center = options.center ? toLngLat(options.center) : markers[0]?.center;
-  if (!center) throw new Error('Simple Open Maps: give a `center` ([lng, lat] or { lat, lng }) or at least one marker.');
+  if (!center) throw new Error('OpenPin: give a `center` ([lng, lat] or { lat, lng }) or at least one marker.');
   const zoom = options.zoom ?? 14;
   const fitMarkers = markers.length > 1 && options.zoom == null;
   const placeName = options.label ?? markers[0]?.label;
@@ -275,7 +275,7 @@ export function createMap(target, options = {}) {
     if (element.dataset.somState === 'unavailable') return;
     element.dataset.somState = 'unavailable';
     status.textContent = options.unavailableText ?? 'The map could not load.';
-    if (error) console.warn('Simple Open Maps:', error);
+    if (error) console.warn('OpenPin:', error);
     resolveReady(null);
     fire('som:error', { error });
   }
@@ -429,7 +429,7 @@ export function optionsFromAttributes(element) {
   const json = name => {
     const value = data[name];
     if (!value) return undefined;
-    try { return JSON.parse(value); } catch { throw new Error(`Simple Open Maps: data-${name.replace(/[A-Z]/g, c => '-' + c.toLowerCase())} is not valid JSON.`); }
+    try { return JSON.parse(value); } catch { throw new Error(`OpenPin: data-${name.replace(/[A-Z]/g, c => '-' + c.toLowerCase())} is not valid JSON.`); }
   };
   const flag = value => (value === 'true' ? true : value === 'false' ? false : value || undefined);
   return {
@@ -464,7 +464,7 @@ export function autoInit(root = document) {
   });
 }
 
-addStylesheet(asset('simple-open-maps.css')).catch(error => console.error('Simple Open Maps:', error));
+addStylesheet(asset('simple-open-maps.css')).catch(error => console.error('OpenPin:', error));
 
 const api = { version, themes, colorRoles, createMap, getMap, autoInit, resolveColors, buildStyle, loadMapLibre, toLngLat, openStreetMapUrl, optionsFromAttributes };
 window.SimpleOpenMaps = api;

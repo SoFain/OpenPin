@@ -1,4 +1,4 @@
-/* Simple Open Maps 1.0.0 | MIT
+/* OpenPin 1.0.0 | MIT
    Colors come from the theme (set by the script as CSS custom properties on
    the map element). Override any of them in your own CSS if you prefer:
    .som { --som-pin: #0a7; --som-radius: 12px; } */

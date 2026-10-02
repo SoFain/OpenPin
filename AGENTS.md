@@ -1,4 +1,4 @@
-# AGENTS.md — Simple Open Maps
+# AGENTS.md — OpenPin
 
 Instructions for AI coding agents adding a map to a website with this package. Humans should read README.md.
 
