@@ -1,0 +1,153 @@
+/* Simple Open Maps 1.0.0 | MIT
+   Colors come from the theme (set by the script as CSS custom properties on
+   the map element). Override any of them in your own CSS if you prefer:
+   .som { --som-pin: #0a7; --som-radius: 12px; } */
+
+.som {
+  --som-pin: #982f23;
+  --som-pin-icon: #fff4d7;
+  --som-surface: #fbf6e9;
+  --som-text: #213e32;
+  --som-border: #c9ccb8;
+  --som-background: #f3eedf;
+  --som-shadow: 0 2px 5px rgb(0 0 0 / 0.12);
+  --som-radius: 6px;
+  --som-font: inherit;
+  position: relative;
+  min-height: 420px;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--som-background);
+  color: var(--som-text);
+  font-family: var(--som-font);
+}
+
+.som .som-map { position: absolute; inset: 0; width: 100%; height: 100%; font-family: var(--som-font); }
+
+/* Shown while loading and if the map can't load (no WebGL, tiles blocked). */
+.som .som-fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 32px;
+  text-align: center;
+  background: var(--som-background);
+}
+.som .som-fallback .som-pin-svg { width: 34px; height: 43px; }
+.som .som-status { margin: 0; font-size: 15px; font-weight: 600; }
+.som .som-fallback-link {
+  padding: 10px 16px;
+  border-radius: var(--som-radius);
+  background: var(--som-text);
+  color: var(--som-surface);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.som[data-som-state="ready"] .som-fallback { display: none; }
+
+/* "Back to ..." button, top left. */
+.som .som-home {
+  position: absolute;
+  z-index: 2;
+  top: 14px;
+  left: 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 12px;
+  border: 1px solid var(--som-border);
+  border-radius: var(--som-radius);
+  background: var(--som-surface);
+  box-shadow: var(--som-shadow);
+  color: var(--som-text);
+  font: 700 12px/1 var(--som-font);
+  cursor: pointer;
+}
+.som .som-home[hidden] { display: none; }
+.som .som-home:hover { filter: brightness(1.04); }
+.som .som-home:focus-visible { outline: 2px solid var(--som-pin); outline-offset: 2px; }
+.som .som-home svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+
+/* Pins */
+.som .som-pin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  color: var(--som-text);
+  font-family: var(--som-font);
+  text-decoration: none;
+  cursor: pointer;
+}
+.som .som-pin-label {
+  padding: 6px 12px;
+  border: 1px solid var(--som-border);
+  border-radius: var(--som-radius);
+  background: var(--som-surface);
+  box-shadow: 0 3px 9px rgb(0 0 0 / 0.15);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.som .som-pin .som-pin-svg { width: 43px; height: 53px; filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.2)); }
+.som .som-pin:focus-visible { outline: 2px solid var(--som-pin); outline-offset: 4px; border-radius: var(--som-radius); }
+.som .som-pin-body { fill: var(--som-pin); stroke: var(--som-surface); stroke-width: 3; }
+.som .som-no-stroke { stroke: none; }
+.som .som-pin-icon { fill: var(--som-pin-icon); }
+.som .som-pin-line { fill: none; stroke: var(--som-pin-icon); stroke-width: 2; }
+
+/* MapLibre controls, restyled to match the theme. */
+.som .maplibregl-ctrl-top-right { top: 6px; right: 6px; }
+.som .maplibregl-ctrl-group {
+  overflow: hidden;
+  border: 1px solid var(--som-border);
+  border-radius: var(--som-radius);
+  background: var(--som-surface);
+  box-shadow: var(--som-shadow);
+}
+.som .maplibregl-ctrl-group button { width: 35px; height: 35px; }
+.som .maplibregl-ctrl-group button + button { border-top-color: var(--som-border); }
+.som .maplibregl-ctrl.maplibregl-ctrl-attrib { background-color: var(--som-surface); color: var(--som-text); font-size: 10px; line-height: 1.8; padding: 3px 8px; }
+.som .maplibregl-ctrl-attrib a { color: inherit; }
+.som .maplibregl-ctrl-attrib.maplibregl-compact {
+  box-sizing: border-box;
+  width: 30px;
+  min-height: 30px;
+  margin: 12px;
+  padding: 0;
+  border: 1px solid var(--som-border);
+  border-radius: 50%;
+  box-shadow: var(--som-shadow);
+}
+.som .maplibregl-ctrl-attrib.maplibregl-compact-show {
+  display: flex;
+  align-items: center;
+  width: auto;
+  padding: 3px 32px 3px 9px;
+  border-radius: var(--som-radius);
+  line-height: 1.6;
+}
+.som .maplibregl-ctrl-attrib-button {
+  top: 50%;
+  right: 2px;
+  transform: translateY(-50%);
+  background-color: transparent;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.som .maplibregl-ctrl-attrib-button:focus-visible { outline: 2px solid var(--som-pin); outline-offset: 2px; }
+
+/* Dark themes: MapLibre's control icons are dark images, so flip them. */
+.som[data-som-dark] .maplibregl-ctrl-icon,
+.som[data-som-dark] .maplibregl-ctrl-attrib-button { filter: invert(1); }
+
+@media (max-width: 600px) {
+  .som { min-height: 320px; }
+  .som .som-home { top: 10px; left: 10px; font-size: 11px; }
+}

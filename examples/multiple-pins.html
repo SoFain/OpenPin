@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simple Open Maps — Multiple Pins</title>
+  <style>
+    body { margin: 0; padding: 24px 16px; background: #f4f6f7; color: #1f3a48; font: 16px/1.5 system-ui, sans-serif; }
+    .wrap { max-width: 900px; margin: 0 auto; }
+    #locations { height: 520px; border-radius: 12px; }
+    .buttons { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+    button { padding: 8px 14px; border: 1px solid #c9d4dc; border-radius: 6px; background: #fff; font: inherit; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Our locations</h1>
+    <p>JavaScript API: several pins, the <code>coastal</code> theme, one color override, and live recoloring.</p>
+    <div id="locations"></div>
+    <div class="buttons" id="themes"></div>
+  </div>
+
+  <script type="module">
+    import { createMap, themes } from '../simple-open-maps/simple-open-maps.js';
+
+    // With several markers and no zoom, the map fits all pins on screen.
+    const locations = createMap('#locations', {
+      theme: 'coastal',
+      colors: { highway: '#f0a95b' },
+      homeLabel: 'Show all locations',
+      markers: [
+        { lat: 30.4213, lng: -87.2169, label: 'Pensacola' },
+        { lat: 30.3960, lng: -86.4958, label: 'Destin', pin: 'dot' },
+        { lat: 30.7835, lng: -86.5547, label: 'Crestview', color: '#c2410c' },
+      ],
+    });
+
+    locations.ready.then(map => {
+      if (map) console.log('Map ready at zoom', map.getZoom().toFixed(1));
+    });
+
+    for (const name of Object.keys(themes)) {
+      const button = document.createElement('button');
+      button.textContent = name;
+      button.onclick = () => locations.setColors(name);
+      document.getElementById('themes').append(button);
+    }
+  </script>
+</body>
+</html>

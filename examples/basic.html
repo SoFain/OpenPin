@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simple Open Maps — Basic</title>
+  <style>
+    body { margin: 0; padding: 24px 16px; background: #faf7ef; color: #213e32; font: 16px/1.5 system-ui, sans-serif; }
+    .wrap { max-width: 900px; margin: 0 auto; }
+    .card { overflow: hidden; border-radius: 12px; box-shadow: 0 10px 30px rgb(0 0 0 / 0.12); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Visit us</h1>
+    <p>One <code>&lt;div&gt;</code> and one <code>&lt;script&gt;</code>. No JavaScript to write.</p>
+
+    <div class="card">
+      <!-- The text inside the div is shown if JavaScript is off. -->
+      <div
+        data-simple-open-map
+        data-lat="30.79694"
+        data-lng="-86.68139"
+        data-zoom="14.7"
+        data-label="Baker Feed &amp; Country Store"
+        data-home-label="Back to Baker"
+        data-address="5791 Highway 4, Baker, Florida"
+        style="height: 480px">
+        5791 Highway 4, Baker, Florida
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="../simple-open-maps/simple-open-maps.js"></script>
+</body>
+</html>

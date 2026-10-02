@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simple Open Maps — Theme Builder</title>
+  <meta name="description" content="Pick a place and colors, then copy a ready-to-paste OpenStreetMap embed. No API key.">
+  <style>
+    :root { --ink: #1f2a24; --muted: #5d6a62; --line: #dcded4; --paper: #fbfaf6; --card: #ffffff; --accent: #2f5d46; color-scheme: light; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+    header { padding: 28px 20px 8px; max-width: 1240px; margin: 0 auto; }
+    h1 { margin: 0 0 4px; font-size: 26px; letter-spacing: -0.01em; }
+    header p { margin: 0; color: var(--muted); }
+    main { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 20px; max-width: 1240px; margin: 0 auto; padding: 20px; }
+    aside, .output { background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
+    aside { padding: 18px; align-self: start; }
+    h2 { margin: 18px 0 8px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+    h2:first-child { margin-top: 0; }
+    .themes { display: flex; flex-wrap: wrap; gap: 6px; }
+    .themes button { padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; background: #fff; color: var(--ink); font: inherit; font-size: 13px; cursor: pointer; }
+    .themes button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+    label.field { display: block; margin-bottom: 8px; font-size: 13px; color: var(--muted); }
+    label.field input { display: block; width: 100%; margin-top: 3px; padding: 7px 9px; border: 1px solid var(--line); border-radius: 6px; font: inherit; color: var(--ink); }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .colors { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 10px; }
+    .color { display: flex; align-items: center; gap: 8px; font-size: 13px; padding: 3px 0; }
+    .color input { width: 30px; height: 26px; padding: 0; border: 1px solid var(--line); border-radius: 5px; background: none; cursor: pointer; flex: none; }
+    .small-button { margin-top: 8px; padding: 7px 10px; border: 1px solid var(--line); border-radius: 6px; background: #fff; font: inherit; font-size: 13px; cursor: pointer; }
+    .stage { display: grid; gap: 20px; min-width: 0; }
+    #map { height: 520px; border-radius: 10px; border: 1px solid var(--line); }
+    .output { padding: 16px 18px; min-width: 0; }
+    .tabs { display: flex; gap: 6px; margin-bottom: 10px; }
+    .tabs button { padding: 5px 10px; border: 1px solid var(--line); border-radius: 6px; background: #fff; font: inherit; font-size: 13px; cursor: pointer; }
+    .tabs button[aria-selected="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+    pre { margin: 0; padding: 14px; overflow: auto; background: #1f2622; color: #e8efe9; border-radius: 8px; font: 12.5px/1.55 ui-monospace, Consolas, monospace; white-space: pre; }
+    .copy { float: right; }
+    footer { max-width: 1240px; margin: 0 auto; padding: 0 20px 40px; color: var(--muted); font-size: 13px; }
+    footer a { color: var(--accent); }
+    @media (max-width: 860px) { main { grid-template-columns: 1fr; } #map { height: 380px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Simple Open Maps</h1>
+    <p>Pick a place and colors, then copy the code. OpenStreetMap data, no API key, no Google.</p>
+  </header>
+  <main>
+    <aside>
+      <h2>Theme</h2>
+      <div class="themes" id="themes"></div>
+
+      <h2>Place</h2>
+      <label class="field">Pin label <input id="label" value="Baker Feed &amp; Country Store"></label>
+      <label class="field">"Back to" button <input id="homeLabel" value="Back to Baker"></label>
+      <div class="row">
+        <label class="field">Latitude <input id="lat" inputmode="decimal" value="30.79694"></label>
+        <label class="field">Longitude <input id="lng" inputmode="decimal" value="-86.68139"></label>
+      </div>
+      <label class="field">Zoom <input id="zoom" inputmode="decimal" value="14.7"></label>
+      <button class="small-button" id="useView" type="button">Use the map's current view</button>
+
+      <h2>Colors</h2>
+      <div class="colors" id="colors"></div>
+    </aside>
+
+    <div class="stage">
+      <div id="map"></div>
+      <section class="output" aria-label="Embed code">
+        <button class="small-button copy" id="copy" type="button">Copy</button>
+        <div class="tabs" role="tablist">
+          <button role="tab" aria-selected="true" data-format="html">HTML only</button>
+          <button role="tab" aria-selected="false" data-format="js">JavaScript</button>
+        </div>
+        <pre><code id="code"></code></pre>
+      </section>
+    </div>
+  </main>
+  <footer>
+    Copy the <code>simple-open-maps</code> folder to your site, then paste the code above. See README.md for details.
+    Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>, tiles by <a href="https://versatiles.org/">VersaTiles</a>, rendering by <a href="https://maplibre.org/">MapLibre</a>.
+  </footer>
+
+  <script type="module">
+    import { createMap, themes, resolveColors } from './simple-open-maps/simple-open-maps.js';
+
+    const LABELS = {
+      background: 'Land', developed: 'Towns', green: 'Parks & fields', forest: 'Forest', bare: 'Sand & rock',
+      water: 'Water', waterway: 'Rivers', building: 'Buildings', buildingOutline: 'Building edge',
+      road: 'Roads', roadCasing: 'Road edge', highway: 'Highways', rail: 'Railways', boundary: 'Borders',
+      label: 'Map text', labelHalo: 'Text halo', icon: 'Map icons',
+      pin: 'Pin', pinIcon: 'Pin icon', surface: 'Buttons', text: 'Button text', border: 'Button edge',
+    };
+    const $ = id => document.getElementById(id);
+    let themeName = 'country';
+    let overrides = {};
+    let format = 'html';
+
+    const place = () => ({
+      label: $('label').value.trim(),
+      homeLabel: $('homeLabel').value.trim(),
+      lat: Number($('lat').value),
+      lng: Number($('lng').value),
+      zoom: Number($('zoom').value) || 14,
+    });
+
+    let controller;
+    function build() {
+      const p = place();
+      if (!Number.isFinite(p.lat) || !Number.isFinite(p.lng)) return;
+      controller = createMap('#map', {
+        center: { lat: p.lat, lng: p.lng }, zoom: p.zoom, label: p.label || undefined,
+        homeLabel: p.homeLabel || undefined, theme: themeName, colors: overrides, lazy: false,
+      });
+      renderCode();
+    }
+
+    function renderThemes() {
+      $('themes').replaceChildren(...Object.keys(themes).map(name => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = name;
+        button.setAttribute('aria-pressed', String(name === themeName));
+        button.onclick = () => { themeName = name; overrides = {}; controller.setColors(name); renderThemes(); renderColors(); renderCode(); };
+        return button;
+      }));
+    }
+
+    function renderColors() {
+      const colors = resolveColors(themeName, overrides);
+      $('colors').replaceChildren(...Object.entries(LABELS).map(([role, text]) => {
+        const label = document.createElement('label');
+        label.className = 'color';
+        const input = document.createElement('input');
+        input.type = 'color';
+        input.value = colors[role];
+        input.oninput = () => { overrides[role] = input.value; controller.setColors({ [role]: input.value }); renderCode(); };
+        label.append(input, text);
+        return label;
+      }));
+    }
+
+    const esc = text => text.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+    function renderCode() {
+      const p = place();
+      const changed = Object.fromEntries(Object.entries(overrides).filter(([role, value]) => value !== themes[themeName][role]));
+      const hasColors = Object.keys(changed).length > 0;
+      let code;
+      if (format === 'html') {
+        const attrs = [
+          'data-simple-open-map',
+          `data-lat="${p.lat}"`, `data-lng="${p.lng}"`, `data-zoom="${p.zoom}"`,
+          p.label && `data-label="${esc(p.label)}"`,
+          p.homeLabel && `data-home-label="${esc(p.homeLabel)}"`,
+          themeName !== 'country' && `data-theme="${themeName}"`,
+          hasColors && `data-colors='${JSON.stringify(changed)}'`,
+          'style="height: 480px"',
+        ].filter(Boolean);
+        code = `<div\n  ${attrs.join('\n  ')}>\n</div>\n<script type="module" src="/simple-open-maps/simple-open-maps.js"><\/script>`;
+      } else {
+        const opts = [
+          `center: { lat: ${p.lat}, lng: ${p.lng} },`,
+          `zoom: ${p.zoom},`,
+          p.label && `label: ${JSON.stringify(p.label)},`,
+          p.homeLabel && `homeLabel: ${JSON.stringify(p.homeLabel)},`,
+          themeName !== 'country' && `theme: '${themeName}',`,
+          hasColors && `colors: ${JSON.stringify(changed, null, 2).replace(/\n/g, '\n    ')},`,
+        ].filter(Boolean);
+        code = `<div id="map" style="height: 480px"></div>\n<script type="module">\n  import { createMap } from '/simple-open-maps/simple-open-maps.js';\n\n  createMap('#map', {\n    ${opts.join('\n    ')}\n  });\n<\/script>`;
+      }
+      $('code').textContent = code;
+    }
+
+    document.querySelectorAll('[data-format]').forEach(tab => tab.onclick = () => {
+      format = tab.dataset.format;
+      document.querySelectorAll('[data-format]').forEach(other => other.setAttribute('aria-selected', String(other === tab)));
+      renderCode();
+    });
+    $('copy').onclick = async () => {
+      await navigator.clipboard.writeText($('code').textContent);
+      $('copy').textContent = 'Copied';
+      setTimeout(() => { $('copy').textContent = 'Copy'; }, 1400);
+    };
+    $('useView').onclick = () => {
+      const map = controller?.map;
+      if (!map) return;
+      const { lat, lng } = map.getCenter();
+      $('lat').value = lat.toFixed(5);
+      $('lng').value = lng.toFixed(5);
+      $('zoom').value = map.getZoom().toFixed(1);
+      build();
+    };
+    let timer;
+    for (const id of ['label', 'homeLabel', 'lat', 'lng', 'zoom']) $(id).addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(build, 500); });
+
+    renderThemes();
+    renderColors();
+    build();
+  </script>
+</body>
+</html>
