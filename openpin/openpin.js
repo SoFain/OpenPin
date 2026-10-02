@@ -6,7 +6,7 @@
  */
 
 // Every file path is resolved from this module's own URL, so the folder can
-// live anywhere on a site (/simple-open-maps/, /assets/maps/, a CDN, ...).
+// live anywhere on a site (/openpin/, /assets/maps/, a CDN, ...).
 const asset = path => new URL(path, import.meta.url).href;
 
 export const version = '1.0.0';
@@ -35,12 +35,12 @@ const STYLE_COLORS = {
 
 // Colors for the pin and the buttons drawn over the map (CSS custom properties).
 const UI_COLORS = {
-  pin: '--som-pin',
-  pinIcon: '--som-pin-icon',
-  surface: '--som-surface',
-  text: '--som-text',
-  border: '--som-border',
-  background: '--som-background',
+  pin: '--openpin-pin',
+  pinIcon: '--openpin-pin-icon',
+  surface: '--openpin-surface',
+  text: '--openpin-text',
+  border: '--openpin-border',
+  background: '--openpin-background',
 };
 
 export const colorRoles = Object.freeze([...Object.keys(STYLE_COLORS), 'pin', 'pinIcon', 'surface', 'text', 'border']);
@@ -169,15 +169,15 @@ function isDark(color) {
 
 function applyUiColors(element, colors) {
   for (const [role, property] of Object.entries(UI_COLORS)) element.style.setProperty(property, colors[role]);
-  element.toggleAttribute('data-som-dark', isDark(colors.surface));
+  element.toggleAttribute('data-openpin-dark', isDark(colors.surface));
 }
 
 const PIN_ICONS = {
-  house: '<path class="som-pin-icon" d="m12 21 10-8 10 8v12H12Z"/><path class="som-pin-body som-no-stroke" d="M20 25h5v8h-5Z"/><path class="som-pin-line" d="M10 21h24"/>',
-  dot: '<circle class="som-pin-icon" cx="22" cy="21" r="7.5"/>',
+  house: '<path class="openpin-pin-icon" d="m12 21 10-8 10 8v12H12Z"/><path class="openpin-pin-body openpin-no-stroke" d="M20 25h5v8h-5Z"/><path class="openpin-pin-line" d="M10 21h24"/>',
+  dot: '<circle class="openpin-pin-icon" cx="22" cy="21" r="7.5"/>',
   none: '',
 };
-const pinSvg = icon => `<svg class="som-pin-svg" viewBox="0 0 44 56" aria-hidden="true"><path class="som-pin-body" d="M22 54C17 43 2 32 2 21a20 20 0 1 1 40 0c0 11-15 22-20 33Z"/>${PIN_ICONS[icon] ?? PIN_ICONS.house}</svg>`;
+const pinSvg = icon => `<svg class="openpin-pin-svg" viewBox="0 0 44 56" aria-hidden="true"><path class="openpin-pin-body" d="M22 54C17 43 2 32 2 21a20 20 0 1 1 40 0c0 11-15 22-20 33Z"/>${PIN_ICONS[icon] ?? PIN_ICONS.house}</svg>`;
 const RECENTER_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>';
 
 function escapeHtml(text) {
@@ -223,27 +223,27 @@ export function createMap(target, options = {}) {
 
   // Build the map shell. Any existing children (for example a plain address
   // shown to visitors without JavaScript) are replaced.
-  element.classList.add('som');
-  element.dataset.somState = 'idle';
+  element.classList.add('openpin');
+  element.dataset.openpinState = 'idle';
   applyUiColors(element, colors);
 
   const canvas = document.createElement('div');
-  canvas.className = 'som-map';
+  canvas.className = 'openpin-map';
   canvas.setAttribute('role', 'region');
   canvas.setAttribute('aria-label', options.ariaLabel ?? (placeName ? `Map showing ${placeName}` : 'Map'));
   canvas.inert = true;
 
   const fallback = document.createElement('div');
-  fallback.className = 'som-fallback';
-  fallback.innerHTML = `${pinSvg('dot')}<p class="som-status" role="status"></p><a class="som-fallback-link" target="_blank" rel="noopener">Open in OpenStreetMap</a>`;
-  const status = fallback.querySelector('.som-status');
+  fallback.className = 'openpin-fallback';
+  fallback.innerHTML = `${pinSvg('dot')}<p class="openpin-status" role="status"></p><a class="openpin-fallback-link" target="_blank" rel="noopener">Open in OpenStreetMap</a>`;
+  const status = fallback.querySelector('.openpin-status');
   const restingText = options.address ?? placeName ?? 'Map';
   status.textContent = restingText;
   fallback.querySelector('a').href = options.link ?? openStreetMapUrl(center, Math.max(zoom, 16));
 
   const home = document.createElement('button');
   home.type = 'button';
-  home.className = 'som-home';
+  home.className = 'openpin-home';
   home.hidden = true;
   home.innerHTML = `${RECENTER_ICON}<span></span>`;
   home.querySelector('span').textContent = options.homeLabel || 'Re-center';
@@ -263,21 +263,21 @@ export function createMap(target, options = {}) {
   const fire = (name, detail) => element.dispatchEvent(new CustomEvent(name, { detail }));
 
   // Slow or failed tiles show the fallback but keep the map, so it still
-  // appears (and fires som:ready) if the tiles arrive later. A hard failure,
+  // appears (and fires openpin:ready) if the tiles arrive later. A hard failure,
   // such as no WebGL or missing files, removes the map.
   function fail(error, hard = false) {
-    if (destroyed || element.dataset.somState === 'ready') return;
+    if (destroyed || element.dataset.openpinState === 'ready') return;
     if (hard) {
       clearTimeout(timeout);
       map?.remove();
       map = null;
     }
-    if (element.dataset.somState === 'unavailable') return;
-    element.dataset.somState = 'unavailable';
+    if (element.dataset.openpinState === 'unavailable') return;
+    element.dataset.openpinState = 'unavailable';
     status.textContent = options.unavailableText ?? 'The map could not load.';
     if (error) console.warn('OpenPin:', error);
     resolveReady(null);
-    fire('som:error', { error });
+    fire('openpin:error', { error });
   }
 
   function armTimeout() {
@@ -303,7 +303,7 @@ export function createMap(target, options = {}) {
 
   function addMarker(marker) {
     const pin = document.createElement(marker.link === false ? 'div' : 'a');
-    pin.className = 'som-pin';
+    pin.className = 'openpin-pin';
     const label = marker.label ?? '';
     if (pin.tagName === 'A') {
       pin.href = marker.link ?? openStreetMapUrl(marker.center);
@@ -311,15 +311,15 @@ export function createMap(target, options = {}) {
       pin.rel = 'noopener';
       pin.setAttribute('aria-label', label ? `${label}. Open in OpenStreetMap.` : 'Open in OpenStreetMap');
     }
-    if (marker.color) pin.style.setProperty('--som-pin', marker.color);
+    if (marker.color) pin.style.setProperty('--openpin-pin', marker.color);
     const showLabel = label && marker.showLabel !== false && options.showLabels !== false;
-    pin.innerHTML = (showLabel ? `<span class="som-pin-label">${escapeHtml(label)}</span>` : '') + pinSvg(marker.pin ?? options.pin);
+    pin.innerHTML = (showLabel ? `<span class="openpin-pin-label">${escapeHtml(label)}</span>` : '') + pinSvg(marker.pin ?? options.pin);
     return new library.Marker({ element: pin, anchor: 'bottom' }).setLngLat(marker.center).addTo(map);
   }
 
   async function start() {
-    if (destroyed || element.dataset.somState !== 'idle') return;
-    element.dataset.somState = 'loading';
+    if (destroyed || element.dataset.openpinState !== 'idle') return;
+    element.dataset.openpinState = 'loading';
     status.textContent = options.loadingText ?? 'Loading map…';
     armTimeout();
     try {
@@ -350,9 +350,9 @@ export function createMap(target, options = {}) {
       const showReadyMap = () => {
         // A style can finish loading even if every tile request failed.
         // Keep the fallback until real geographic features are on screen.
-        if (!map || element.dataset.somState === 'ready' || !map.queryRenderedFeatures().length) return;
+        if (!map || element.dataset.openpinState === 'ready' || !map.queryRenderedFeatures().length) return;
         clearTimeout(timeout);
-        element.dataset.somState = 'ready';
+        element.dataset.openpinState = 'ready';
         canvas.inert = false;
         home.hidden = options.homeLabel === false;
         status.textContent = restingText;
@@ -362,11 +362,11 @@ export function createMap(target, options = {}) {
         if (attribution) attribution.open = false;
         resolveReady(map);
         options.onReady?.(map, library);
-        fire('som:ready', { map, maplibregl: library });
+        fire('openpin:ready', { map, maplibregl: library });
       };
       map.once('load', showReadyMap);
       map.on('idle', showReadyMap);
-      map.on('error', event => { if (element.dataset.somState !== 'ready') fail(event?.error); });
+      map.on('error', event => { if (element.dataset.openpinState !== 'ready') fail(event?.error); });
       resizeObserver = new ResizeObserver(() => map?.resize());
       resizeObserver.observe(element);
     } catch (error) {
@@ -398,9 +398,9 @@ export function createMap(target, options = {}) {
       map?.remove();
       map = null;
       element.replaceChildren();
-      element.classList.remove('som');
-      element.removeAttribute('data-som-state');
-      element.removeAttribute('data-som-dark');
+      element.classList.remove('openpin');
+      element.removeAttribute('data-openpin-state');
+      element.removeAttribute('data-openpin-dark');
       Object.values(UI_COLORS).forEach(property => element.style.removeProperty(property));
       instances.delete(element);
       resolveReady(null);
@@ -452,9 +452,9 @@ export function optionsFromAttributes(element) {
   };
 }
 
-/** Create maps for every element with a data-simple-open-map attribute. */
+/** Create maps for every element with a data-openpin attribute. */
 export function autoInit(root = document) {
-  root.querySelectorAll('[data-simple-open-map]').forEach(element => {
+  root.querySelectorAll('[data-openpin]').forEach(element => {
     if (instances.has(element)) return;
     try {
       createMap(element, optionsFromAttributes(element));
@@ -464,10 +464,10 @@ export function autoInit(root = document) {
   });
 }
 
-addStylesheet(asset('simple-open-maps.css')).catch(error => console.error('OpenPin:', error));
+addStylesheet(asset('openpin.css')).catch(error => console.error('OpenPin:', error));
 
 const api = { version, themes, colorRoles, createMap, getMap, autoInit, resolveColors, buildStyle, loadMapLibre, toLngLat, openStreetMapUrl, optionsFromAttributes };
-window.SimpleOpenMaps = api;
+window.OpenPin = api;
 // Module scripts run after the document is parsed, so the elements exist.
 autoInit();
 export default api;

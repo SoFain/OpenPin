@@ -83,12 +83,12 @@
     </div>
   </main>
   <footer>
-    Copy the <code>simple-open-maps</code> folder to your site, then paste the code above. See README.md for details.
+    Copy the <code>openpin</code> folder to your site, then paste the code above. See README.md for details.
     Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>, tiles by <a href="https://versatiles.org/">VersaTiles</a>, rendering by <a href="https://maplibre.org/">MapLibre</a>.
   </footer>
 
   <script type="module">
-    import { createMap, themes, resolveColors } from './simple-open-maps/simple-open-maps.js';
+    import { createMap, themes, resolveColors } from './openpin/openpin.js';
 
     const LABELS = {
       background: 'Land', developed: 'Towns', green: 'Parks & fields', forest: 'Forest', bare: 'Sand & rock',
@@ -154,7 +154,7 @@
       let code;
       if (format === 'html') {
         const attrs = [
-          'data-simple-open-map',
+          'data-openpin',
           `data-lat="${p.lat}"`, `data-lng="${p.lng}"`, `data-zoom="${p.zoom}"`,
           p.label && `data-label="${esc(p.label)}"`,
           p.homeLabel && `data-home-label="${esc(p.homeLabel)}"`,
@@ -162,7 +162,7 @@
           hasColors && `data-colors='${JSON.stringify(changed)}'`,
           'style="height: 480px"',
         ].filter(Boolean);
-        code = `<div\n  ${attrs.join('\n  ')}>\n</div>\n<script type="module" src="/simple-open-maps/simple-open-maps.js"><\/script>`;
+        code = `<div\n  ${attrs.join('\n  ')}>\n</div>\n<script type="module" src="/openpin/openpin.js"><\/script>`;
       } else {
         const opts = [
           `center: { lat: ${p.lat}, lng: ${p.lng} },`,
@@ -172,7 +172,7 @@
           themeName !== 'country' && `theme: '${themeName}',`,
           hasColors && `colors: ${JSON.stringify(changed, null, 2).replace(/\n/g, '\n    ')},`,
         ].filter(Boolean);
-        code = `<div id="map" style="height: 480px"></div>\n<script type="module">\n  import { createMap } from '/simple-open-maps/simple-open-maps.js';\n\n  createMap('#map', {\n    ${opts.join('\n    ')}\n  });\n<\/script>`;
+        code = `<div id="map" style="height: 480px"></div>\n<script type="module">\n  import { createMap } from '/openpin/openpin.js';\n\n  createMap('#map', {\n    ${opts.join('\n    ')}\n  });\n<\/script>`;
       }
       $('code').textContent = code;
     }

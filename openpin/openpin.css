@@ -1,0 +1,153 @@
+/* OpenPin 1.0.0 | MIT
+   Colors come from the theme (set by the script as CSS custom properties on
+   the map element). Override any of them in your own CSS if you prefer:
+   .openpin { --openpin-pin: #0a7; --openpin-radius: 12px; } */
+
+.openpin {
+  --openpin-pin: #982f23;
+  --openpin-pin-icon: #fff4d7;
+  --openpin-surface: #fbf6e9;
+  --openpin-text: #213e32;
+  --openpin-border: #c9ccb8;
+  --openpin-background: #f3eedf;
+  --openpin-shadow: 0 2px 5px rgb(0 0 0 / 0.12);
+  --openpin-radius: 6px;
+  --openpin-font: inherit;
+  position: relative;
+  min-height: 420px;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--openpin-background);
+  color: var(--openpin-text);
+  font-family: var(--openpin-font);
+}
+
+.openpin .openpin-map { position: absolute; inset: 0; width: 100%; height: 100%; font-family: var(--openpin-font); }
+
+/* Shown while loading and if the map can't load (no WebGL, tiles blocked). */
+.openpin .openpin-fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 32px;
+  text-align: center;
+  background: var(--openpin-background);
+}
+.openpin .openpin-fallback .openpin-pin-svg { width: 34px; height: 43px; }
+.openpin .openpin-status { margin: 0; font-size: 15px; font-weight: 600; }
+.openpin .openpin-fallback-link {
+  padding: 10px 16px;
+  border-radius: var(--openpin-radius);
+  background: var(--openpin-text);
+  color: var(--openpin-surface);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.openpin[data-openpin-state="ready"] .openpin-fallback { display: none; }
+
+/* "Back to ..." button, top left. */
+.openpin .openpin-home {
+  position: absolute;
+  z-index: 2;
+  top: 14px;
+  left: 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 12px;
+  border: 1px solid var(--openpin-border);
+  border-radius: var(--openpin-radius);
+  background: var(--openpin-surface);
+  box-shadow: var(--openpin-shadow);
+  color: var(--openpin-text);
+  font: 700 12px/1 var(--openpin-font);
+  cursor: pointer;
+}
+.openpin .openpin-home[hidden] { display: none; }
+.openpin .openpin-home:hover { filter: brightness(1.04); }
+.openpin .openpin-home:focus-visible { outline: 2px solid var(--openpin-pin); outline-offset: 2px; }
+.openpin .openpin-home svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+
+/* Pins */
+.openpin .openpin-pin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  color: var(--openpin-text);
+  font-family: var(--openpin-font);
+  text-decoration: none;
+  cursor: pointer;
+}
+.openpin .openpin-pin-label {
+  padding: 6px 12px;
+  border: 1px solid var(--openpin-border);
+  border-radius: var(--openpin-radius);
+  background: var(--openpin-surface);
+  box-shadow: 0 3px 9px rgb(0 0 0 / 0.15);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.openpin .openpin-pin .openpin-pin-svg { width: 43px; height: 53px; filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.2)); }
+.openpin .openpin-pin:focus-visible { outline: 2px solid var(--openpin-pin); outline-offset: 4px; border-radius: var(--openpin-radius); }
+.openpin .openpin-pin-body { fill: var(--openpin-pin); stroke: var(--openpin-surface); stroke-width: 3; }
+.openpin .openpin-no-stroke { stroke: none; }
+.openpin .openpin-pin-icon { fill: var(--openpin-pin-icon); }
+.openpin .openpin-pin-line { fill: none; stroke: var(--openpin-pin-icon); stroke-width: 2; }
+
+/* MapLibre controls, restyled to match the theme. */
+.openpin .maplibregl-ctrl-top-right { top: 6px; right: 6px; }
+.openpin .maplibregl-ctrl-group {
+  overflow: hidden;
+  border: 1px solid var(--openpin-border);
+  border-radius: var(--openpin-radius);
+  background: var(--openpin-surface);
+  box-shadow: var(--openpin-shadow);
+}
+.openpin .maplibregl-ctrl-group button { width: 35px; height: 35px; }
+.openpin .maplibregl-ctrl-group button + button { border-top-color: var(--openpin-border); }
+.openpin .maplibregl-ctrl.maplibregl-ctrl-attrib { background-color: var(--openpin-surface); color: var(--openpin-text); font-size: 10px; line-height: 1.8; padding: 3px 8px; }
+.openpin .maplibregl-ctrl-attrib a { color: inherit; }
+.openpin .maplibregl-ctrl-attrib.maplibregl-compact {
+  box-sizing: border-box;
+  width: 30px;
+  min-height: 30px;
+  margin: 12px;
+  padding: 0;
+  border: 1px solid var(--openpin-border);
+  border-radius: 50%;
+  box-shadow: var(--openpin-shadow);
+}
+.openpin .maplibregl-ctrl-attrib.maplibregl-compact-show {
+  display: flex;
+  align-items: center;
+  width: auto;
+  padding: 3px 32px 3px 9px;
+  border-radius: var(--openpin-radius);
+  line-height: 1.6;
+}
+.openpin .maplibregl-ctrl-attrib-button {
+  top: 50%;
+  right: 2px;
+  transform: translateY(-50%);
+  background-color: transparent;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.openpin .maplibregl-ctrl-attrib-button:focus-visible { outline: 2px solid var(--openpin-pin); outline-offset: 2px; }
+
+/* Dark themes: MapLibre's control icons are dark images, so flip them. */
+.openpin[data-openpin-dark] .maplibregl-ctrl-icon,
+.openpin[data-openpin-dark] .maplibregl-ctrl-attrib-button { filter: invert(1); }
+
+@media (max-width: 600px) {
+  .openpin { min-height: 320px; }
+  .openpin .openpin-home { top: 10px; left: 10px; font-size: 11px; }
+}

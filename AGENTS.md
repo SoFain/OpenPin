@@ -4,17 +4,17 @@ Instructions for AI coding agents adding a map to a website with this package. H
 
 ## What this is
 
-`simple-open-maps/` is a self-contained folder that renders an OpenStreetMap map with custom colors, using MapLibre GL JS (bundled) and free VersaTiles vector tiles. It needs no API key, no npm install, and no build step. The entry point is the ES module `simple-open-maps/simple-open-maps.js`. It loads its own CSS, MapLibre, and the style, all resolved relative to its own URL.
+`openpin/` is a self-contained folder that renders an OpenStreetMap map with custom colors, using MapLibre GL JS (bundled) and free VersaTiles vector tiles. It needs no API key, no npm install, and no build step. The entry point is the ES module `openpin/openpin.js`. It loads its own CSS, MapLibre, and the style, all resolved relative to its own URL.
 
 ## Install into a site (do exactly this)
 
-1. Copy the entire `simple-open-maps/` directory into the site's publicly served root, or into its static folder (`public/`, `static/`, `assets/`, ...). Don't rename or remove files inside it, and don't bundle it. The script finds its files by relative path.
+1. Copy the entire `openpin/` directory into the site's publicly served root, or into its static folder (`public/`, `static/`, `assets/`, ...). Don't rename or remove files inside it, and don't bundle it. The script finds its files by relative path.
 2. Add a map element where the map should appear, and give it a height.
 3. Add the script tag once per page, with `type="module"`.
 
 ```html
 <div
-  data-simple-open-map
+  data-openpin
   data-lat="LATITUDE"
   data-lng="LONGITUDE"
   data-zoom="15"
@@ -24,10 +24,10 @@ Instructions for AI coding agents adding a map to a website with this package. H
   style="height: 480px">
   Street, City, State
 </div>
-<script type="module" src="/simple-open-maps/simple-open-maps.js"></script>
+<script type="module" src="/openpin/openpin.js"></script>
 ```
 
-Adjust `src` to wherever you copied the folder. A relative path like `../simple-open-maps/simple-open-maps.js` also works.
+Adjust `src` to wherever you copied the folder. A relative path like `../openpin/openpin.js` also works.
 
 ## Rules that prevent the common mistakes
 
@@ -78,17 +78,17 @@ To match a site's brand:
 5. For a dark site, start from `theme: 'midnight'` and override.
 
 ```html
-<div data-simple-open-map data-lat="40.7128" data-lng="-74.0060"
+<div data-openpin data-lat="40.7128" data-lng="-74.0060"
      data-theme="mono" data-colors='{"pin":"#5b21b6","highway":"#d8b4fe"}'
      style="height:420px"></div>
 ```
 
-CSS hooks (put them in the site's stylesheet): `.som { --som-font; --som-radius; --som-shadow }`. The script sets the `--som-pin`, `--som-pin-icon`, `--som-surface`, `--som-text`, `--som-border`, and `--som-background` variables inline on the element from the theme. Change colors through the `colors` option, not CSS, so the map and UI stay in sync.
+CSS hooks (put them in the site's stylesheet): `.openpin { --openpin-font; --openpin-radius; --openpin-shadow }`. The script sets the `--openpin-pin`, `--openpin-pin-icon`, `--openpin-surface`, `--openpin-text`, `--openpin-border`, and `--openpin-background` variables inline on the element from the theme. Change colors through the `colors` option, not CSS, so the map and UI stay in sync.
 
 ## JavaScript API (when attributes aren't enough)
 
 ```js
-import { createMap, themes, getMap } from '/simple-open-maps/simple-open-maps.js';
+import { createMap, themes, getMap } from '/openpin/openpin.js';
 
 const controller = createMap(elementOrSelector, {
   center: { lat, lng },            // or [lng, lat]; optional if markers is given
@@ -116,15 +116,15 @@ controller.recenter(); controller.load(); controller.destroy();
 getMap(element)         // controller for an auto-initialized element
 ```
 
-- Events on the element: `som:ready` (`detail.map`, `detail.maplibregl`) and `som:error`.
+- Events on the element: `openpin:ready` (`detail.map`, `detail.maplibregl`) and `openpin:error`.
 - Calling `createMap` on an element that already has a map destroys the old one first.
-- `window.SimpleOpenMaps` exposes the same API for non-module code.
-- For content inserted after page load (SPAs), call `SimpleOpenMaps.autoInit()` or `createMap()` after insertion, and `destroy()` on unmount.
-- In React, Vue, or Svelte, keep the folder in `public/` and load the module at runtime with `import(/* @vite-ignore */ '/simple-open-maps/simple-open-maps.js')`, so the bundler doesn't process MapLibre.
+- `window.OpenPin` exposes the same API for non-module code.
+- For content inserted after page load (SPAs), call `OpenPin.autoInit()` or `createMap()` after insertion, and `destroy()` on unmount.
+- In React, Vue, or Svelte, keep the folder in `public/` and load the module at runtime with `import(/* @vite-ignore */ '/openpin/openpin.js')`, so the bundler doesn't process MapLibre.
 
 ## Behavior to know
 
-- The map shows a fallback panel (address, plus an "Open in OpenStreetMap" link) while loading, and also when WebGL is unavailable, tiles fail, or 20 s pass with the page visible. If tiles arrive later, the map replaces the fallback and fires `som:ready`.
+- The map shows a fallback panel (address, plus an "Open in OpenStreetMap" link) while loading, and also when WebGL is unavailable, tiles fail, or 20 s pass with the page visible. If tiles arrive later, the map replaces the fallback and fires `openpin:ready`.
 - Page scrolling isn't captured. By default, Ctrl/⌘ + scroll zooms the map and touch users pan with two fingers. Rotation and pitch are disabled.
 - With 2+ markers and no `zoom`, the map fits all pins. The home button returns to that view.
 
@@ -132,21 +132,21 @@ getMap(element)         // controller for an auto-initialized element
 
 | Path | Purpose | Edit? |
 |---|---|---|
-| `simple-open-maps/simple-open-maps.js` | Loader, themes, API | Only to add themes or features |
-| `simple-open-maps/simple-open-maps.css` | Pin, buttons, fallback | OK, but prefer overriding in site CSS |
-| `simple-open-maps/style.json` | MapLibre style (VersaTiles Shortbread schema) | To change the tile/glyph servers, or for advanced layer tweaks |
-| `simple-open-maps/sprites/` | POI icon sprite (SDF, recolored by `icon`) | No |
-| `simple-open-maps/maplibre/` | MapLibre GL JS 6.3.0. Renamed from `.mjs` to `.js` with the one internal import path updated, so any host serves it with a JS MIME type | No |
+| `openpin/openpin.js` | Loader, themes, API | Only to add themes or features |
+| `openpin/openpin.css` | Pin, buttons, fallback | OK, but prefer overriding in site CSS |
+| `openpin/style.json` | MapLibre style (VersaTiles Shortbread schema) | To change the tile/glyph servers, or for advanced layer tweaks |
+| `openpin/sprites/` | POI icon sprite (SDF, recolored by `icon`) | No |
+| `openpin/maplibre/` | MapLibre GL JS 6.3.0. Renamed from `.mjs` to `.js` with the one internal import path updated, so any host serves it with a JS MIME type | No |
 | `index.html` | Theme builder that generates embed code | Demo only, don't deploy |
 | `examples/` | Working examples | Demo only |
 
 ### How recoloring works
 
-Each role's default hex value appears in `style.json` only for that role. For example, `#edbd69` is only ever `highway`. `buildStyle()` swaps those hex strings in a single pass. If you edit `style.json`, keep each default color unique to its role, and update `STYLE_COLORS` in `simple-open-maps.js` to match. To add a theme, add an entry to `themes` that sets every key in `colorRoles`.
+Each role's default hex value appears in `style.json` only for that role. For example, `#edbd69` is only ever `highway`. `buildStyle()` swaps those hex strings in a single pass. If you edit `style.json`, keep each default color unique to its role, and update `STYLE_COLORS` in `openpin.js` to match. To add a theme, add an entry to `themes` that sets every key in `colorRoles`.
 
 ## Verify your work
 
 1. Serve the site over HTTP and open the page.
-2. The element should get `data-som-state="ready"` once it's scrolled into view. It shouldn't stay at `unavailable`.
+2. The element should get `data-openpin-state="ready"` once it's scrolled into view. It shouldn't stay at `unavailable`.
 3. The console should show no errors. Check that the pin sits on the right spot and the attribution (i) is visible.
 4. On a phone-width viewport (375px), the page shouldn't scroll horizontally.

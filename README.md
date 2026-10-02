@@ -20,16 +20,16 @@ A drop-in map for any website. It uses free OpenStreetMap data, so you don't nee
 
 ## 1. Install
 
-Copy the **`simple-open-maps/`** folder into your website, for example to `/simple-open-maps/`.
+Copy the **`openpin/`** folder into your website, for example to `/openpin/`.
 
 That's all there is to it. The folder holds everything the map needs: the script, its CSS, the map style, the icons, and MapLibre.
 
 ```
 your-site/
 ├── index.html
-└── simple-open-maps/        ← copy this whole folder
-    ├── simple-open-maps.js
-    ├── simple-open-maps.css
+└── openpin/        ← copy this whole folder
+    ├── openpin.js
+    ├── openpin.css
     ├── style.json
     ├── sprites/
     └── maplibre/
@@ -41,7 +41,7 @@ Paste these two parts into your page wherever you want the map to appear:
 
 ```html
 <div
-  data-simple-open-map
+  data-openpin
   data-lat="30.79694"
   data-lng="-86.68139"
   data-zoom="14.7"
@@ -51,7 +51,7 @@ Paste these two parts into your page wherever you want the map to appear:
   5791 Highway 4, Baker, Florida
 </div>
 
-<script type="module" src="/simple-open-maps/simple-open-maps.js"></script>
+<script type="module" src="/openpin/openpin.js"></script>
 ```
 
 - Change `data-lat` and `data-lng` to your location (see [Finding your coordinates](#finding-your-coordinates)).
@@ -82,7 +82,7 @@ Then open the address it prints. On a real web host it works as is.
 ### Option A: pick a theme
 
 ```html
-<div data-simple-open-map data-theme="midnight" ...></div>
+<div data-openpin data-theme="midnight" ...></div>
 ```
 
 | Theme | Look |
@@ -98,7 +98,7 @@ Add `data-colors` with only the colors you want to change. Everything else comes
 
 ```html
 <div
-  data-simple-open-map
+  data-openpin
   data-lat="30.79694" data-lng="-86.68139"
   data-theme="coastal"
   data-colors='{"pin": "#c2410c", "highway": "#f0a95b", "water": "#7fb8d6"}'
@@ -150,10 +150,10 @@ For a dark map, set `surface` to a dark color. The zoom buttons flip their icons
 The buttons and pin label use CSS custom properties, so you can override them in your own stylesheet:
 
 ```css
-.som {
-  --som-font: "DM Sans", sans-serif; /* defaults to your page's font */
-  --som-radius: 12px;                 /* button and label corners */
-  --som-shadow: none;
+.openpin {
+  --openpin-font: "DM Sans", sans-serif; /* defaults to your page's font */
+  --openpin-radius: 12px;                 /* button and label corners */
+  --openpin-shadow: none;
 }
 ```
 
@@ -167,7 +167,7 @@ The text on the map itself (street names) uses Noto Sans from the tile server.
 
 | Attribute | Example | Meaning |
 |---|---|---|
-| `data-simple-open-map` | (no value) | Required. Marks the element as a map. |
+| `data-openpin` | (no value) | Required. Marks the element as a map. |
 | `data-lat`, `data-lng` | `30.79694`, `-86.68139` | Location. Required unless you use `data-markers`. |
 | `data-zoom` | `14.7` | 3 = country, 10 = city, 15 = streets, 18 = buildings. Default `14`. |
 | `data-label` | `Baker Feed &amp; Country Store` | Text above the pin. |
@@ -193,7 +193,7 @@ For more control, import the module yourself:
 <div id="locations" style="height: 520px"></div>
 
 <script type="module">
-  import { createMap } from '/simple-open-maps/simple-open-maps.js';
+  import { createMap } from '/openpin/openpin.js';
 
   const locations = createMap('#locations', {
     theme: 'coastal',
@@ -241,9 +241,9 @@ The returned controller has:
 | `load()` | Load now, even if the map is off screen. |
 | `destroy()` | Remove the map. |
 
-**Events:** the map element fires `som:ready` (`event.detail.map`) and `som:error`. If tiles were slow but arrive later, `som:ready` still fires, even after `som:error`.
+**Events:** the map element fires `openpin:ready` (`event.detail.map`) and `openpin:error`. If tiles were slow but arrive later, `openpin:ready` still fires, even after `openpin:error`.
 
-Other exports: `themes`, `colorRoles`, `getMap(element)`, `autoInit(root)`, `resolveColors(theme, colors)`, `toLngLat(value)`, and `openStreetMapUrl([lng, lat])`. The same functions are available as `window.SimpleOpenMaps` for plain scripts.
+Other exports: `themes`, `colorRoles`, `getMap(element)`, `autoInit(root)`, `resolveColors(theme, colors)`, `toLngLat(value)`, and `openStreetMapUrl([lng, lat])`. The same functions are available as `window.OpenPin` for plain scripts.
 
 ---
 
@@ -272,8 +272,8 @@ Visitors usually want directions on their phone. You can link to any maps app. N
 
 ## Using it in frameworks
 
-- **WordPress, Squarespace, Wix, Webflow:** upload the `simple-open-maps` folder (by FTP or file manager on WordPress, or as hosted files elsewhere). Then paste the two-part snippet into a **Custom HTML** or **Embed** block and use the full URL in `src`.
-- **React, Vue, Svelte:** put the folder in `public/`. Call `createMap(ref)` after the component mounts and `controller.destroy()` when it unmounts. Load it with `import(/* @vite-ignore */ '/simple-open-maps/simple-open-maps.js')` so your bundler doesn't try to bundle it.
+- **WordPress, Squarespace, Wix, Webflow:** upload the `openpin` folder (by FTP or file manager on WordPress, or as hosted files elsewhere). Then paste the two-part snippet into a **Custom HTML** or **Embed** block and use the full URL in `src`.
+- **React, Vue, Svelte:** put the folder in `public/`. Call `createMap(ref)` after the component mounts and `controller.destroy()` when it unmounts. Load it with `import(/* @vite-ignore */ '/openpin/openpin.js')` so your bundler doesn't try to bundle it.
 - **Static sites (Hugo, Jekyll, Eleventy, Astro):** put the folder in `static/` or `public/` and paste the snippet into a template.
 
 ## Hosting notes and fair use
@@ -292,8 +292,8 @@ Visitors usually want directions on their phone. You can link to any maps app. N
 | "Loading map…" never finishes on your computer | Use a local server (see step 3), not a double-clicked file. |
 | Error in the console: *Failed to load module script* | The `src` path is wrong. Open that URL in your browser to check it. |
 | The pin is in the ocean or the wrong hemisphere | Latitude and longitude are swapped. Arrays are `[lng, lat]`. |
-| Nothing happens on a page that adds the div later (single-page apps) | Call `SimpleOpenMaps.autoInit()` or `createMap(el, …)` after adding it. |
+| Nothing happens on a page that adds the div later (single-page apps) | Call `OpenPin.autoInit()` or `createMap(el, …)` after adding it. |
 
 ## License
 
-The OpenPin code is under the [MIT License](LICENSE). The bundled MapLibre GL JS is BSD-3-Clause (`simple-open-maps/maplibre/LICENSE.txt`). The map style is adapted from the VersaTiles CC0 style. Map data © OpenStreetMap contributors (ODbL). See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
+The OpenPin code is under the [MIT License](LICENSE). The bundled MapLibre GL JS is BSD-3-Clause (`openpin/maplibre/LICENSE.txt`). The map style is adapted from the VersaTiles CC0 style. Map data © OpenStreetMap contributors (ODbL). See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
